@@ -14,7 +14,7 @@
       text-align: center;
       background-size: cover;
       overflow: hidden; /* Prevent scrollbars from wave animation */
-      background-color: #001f3f; /* Deep ocean blue */
+      background: linear-gradient(to bottom, #ff9e6d 0%, #ff7e50 10%, #e73c7e 30%, #b056ab 50%, #23a6d5 75%, #001f3f 100%); /* Sunset gradient */
       position: relative;
       height: 100vh;
       width: 100%;
@@ -29,7 +29,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      background: linear-gradient(180deg, #001f3f 0%, #00264d 50%, #003366 100%); /* Improved ocean gradient */
+      background: linear-gradient(180deg, rgba(0,31,63,0) 0%, rgba(0,38,77,0.7) 50%, rgba(0,51,102,1) 100%); /* Improved ocean gradient with transparency */
       z-index: -10; /* Behind other content */
     }
 
@@ -49,7 +49,7 @@
       bottom: 0;
       width: 100%;
       height: 250px;
-      background: linear-gradient(180deg, #0088ff 0%, #0044aa 100%);
+      background: linear-gradient(180deg, #ff9e2c 0%, #0088ff 30%, #0044aa 100%); /* Sunset reflection on water */
       z-index: -6;
     }
 
@@ -59,7 +59,7 @@
       bottom: 180px; /* Position above the water body */
       width: 6400px; /* Much wider for smoother animation */
       height: 70px; /* Height of the wave */
-      background: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIwMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZmlsbD0iIzAwODhmZiIgZD0iTTAsMCBDMzAsMzAgNTUsNTAgOTAsNDAgQzEzMCwyOCAyMDAsNjAgMjQwLDUwIEMyOTAsMzUgMzIwLDQ1IDM5MCw2MCBDNDY1LDcwIDQ5MCw0MCA1NjAsMCAKICAgICAgICAgICAgICAgICAgICAgICAgQzYzMCw0MCA2OTAsNjAgNzMwLDUwIEM3NzAsNDAgODQwLDQwIDkwMCw2MCBDOTUwLDgwIDEwMDAsNjUgMTA2MCw0MCBDMTE0MCwxMCAxMTcwLDQ1IDEyMDAsMCBWMCBaIi8+Cjwvc3ZnPg==") repeat-x;
+      background: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIwMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9IndhdmVHcmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmY5ZTJjIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjcwJSIgc3RvcC1jb2xvcj0iIzAwODhmZiIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxwYXRoIGZpbGw9InVybCgjd2F2ZUdyYWRpZW50KSIgZD0iTTAsMCBDMzAsMzAgNTUsNTAgOTAsNDAgQzEzMCwyOCAyMDAsNjAgMjQwLDUwIEMyOTAsMzUgMzIwLDQ1IDM5MCw2MCBDNDY1LDcwIDQ5MCw0MCA1NjAsMCAKICAgICAgICAgICAgICAgICAgICAgICAgQzYzMCw0MCA2OTAsNjAgNzMwLDUwIEM3NzAsNDAgODQwLDQwIDkwMCw2MCBDOTUwLDgwIDEwMDAsNjUgMTA2MCw0MCBDMTE0MCwxMCAxMTcwLDQ1IDEyMDAsMCBWMCBaIi8+Cjwvc3ZnPg==") repeat-x;
       background-size: 1600px 120px;
       animation: wave-animation linear infinite;
       opacity: 0.9;
@@ -102,23 +102,24 @@
       }
     }
 
-    /* Sun style */
+    /* Sun style - updated for sunset */
     .sun {
       position: absolute;
-      top: 60px;
-      right: 100px;
-      width: 80px;
-      height: 80px;
-      background: radial-gradient(circle, #ffee00 30%, #ffa500 70%);
+      top: 20vh; /* Lower position for sunset */
+      left: 50%; /* Center horizontally */
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, #ffee00 30%, #ff5500 70%);
       border-radius: 50%;
-      box-shadow: 0 0 50px 15px rgba(255, 234, 0, 0.3);
+      box-shadow: 0 0 70px 25px rgba(255, 119, 0, 0.6);
       z-index: -9;
     }
 
-    /* Clouds */
+    /* Clouds - updated for sunset */
     .cloud {
       position: absolute;
-      background: rgba(255, 255, 255, 0.8);
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(255, 158, 109, 0.7) 100%);
       border-radius: 50%;
       z-index: -8;
       filter: blur(3px);
@@ -178,7 +179,7 @@
       position: absolute;
       width: 12px;
       height: 3px;
-      background-color: #000;
+      background-color: #333; /* Darker silhouette for sunset */
       animation: flapWings 0.5s ease-in-out infinite alternate;
     }
 
@@ -780,12 +781,22 @@ We sail beneath the moonlit sky.`
         // Update wave height based on violence
         const baseHeight = 70 + (currentViolence * 10); // 80px to 170px
         wave.style.height = `${baseHeight}px`;
+
+        // Add sunset glow to waves
+        const orangeIntensity = Math.max(0, 10 - currentViolence); // Less orange in violent seas
+        wave.style.filter = `brightness(1.1) sepia(${orangeIntensity * 5}%) hue-rotate(-10deg)`;
       });
       
       // Update water height based on violence
       const water = document.querySelector('.water');
       const waterHeight = 250 + (currentViolence * 15); // 265px to 400px
       water.style.height = `${waterHeight}px`;
+      
+      // Adjust sun height based on violence (sun sets lower in stormy seas)
+      const sun = document.querySelector('.sun');
+      const baseSunTop = 20; // Base position in vh units
+      const sunTop = baseSunTop + (currentViolence * 1.5); // Move down slightly in rough seas
+      sun.style.top = `${sunTop}vh`;
       
       // Position ships on waves
       const ships = document.querySelectorAll('.ship');
