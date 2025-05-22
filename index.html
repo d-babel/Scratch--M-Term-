@@ -2,297 +2,285 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fact-Check • Alkaline Water</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Philosophy Quiz Akinator</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0 }
     body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: #121212;
-      color: #e0e0e0;
-      line-height: 1.65;
-    }
-    .topbar {
-      background: #1f1f1f;
-      color: #e0e0e0;
-      padding: .8rem 1.5rem;
-      font-size: 1.05rem;
-    }
-    .topbar span { font-weight: 600 }
-    .accent { height: 4px; background: #ffd04f }
-
-    .wrapper { max-width: 760px; margin: 2rem auto; padding: 0 1rem }
-
-    .verdict {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
       display: flex;
-      align-items: center;
-      background: #1e1e1e;
-      padding: 1.2rem 1.5rem;
-      border-left: 7px solid #d72638;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.5);
-      margin-bottom: 1.8rem;
+      justify-content: center;
     }
-    .verdict-badge {
-      background: #d72638;
-      color: #fff;
-      font-weight: 600;
-      padding: .3rem .7rem;
-      border-radius: 3px;
-      margin-right: 1rem;
-      font-size: 1.05rem;
-    }
-    .verdict p { font-size: 1.05rem }
-
-    h1 { font-size: 1.9rem; margin-bottom: 1rem }
-    h2 { font-size: 1.35rem; margin: 1.8rem 0 .8rem; color: #0d5efd }
-    .card {
-      background: #1e1e1e;
-      padding: 1.6rem 1.5rem;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.5);
-      margin-bottom: 1.5rem;
-    }
-    .card ul { padding-left: 1.2rem }
-    .card li { margin-bottom: .9rem }
-    .claim { font-weight: 600; color: #0d5efd }
-    .debunk { color: #d72638 }
-
-    .two-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    table {
+    #quiz-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      max-width: 600px;
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      background: #1e1e1e;
     }
-    th, td {
-      border: 1px solid #444;
-      padding: .6rem .8rem;
-      text-align: left;
-    }
-    th {
-      background: #2a2a2a;
-    }
-    td { background: #1e1e1e }
-
-    figure {
-      margin: 1.5rem 0;
+    h1, h2, h3 {
       text-align: center;
     }
-    figcaption {
-      margin-top: .5rem;
-      font-size: .9rem;
-      color: #bbb;
+    #progress {
+      margin-bottom: 10px;
+      font-weight: bold;
     }
-
-    footer {
-      background: #1e1e1e;
-      padding: 1.4rem 1.5rem;
-      margin-top: 2.5rem;
-      font-size: .95rem;
+    .question {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
       border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,.5);
+      background: #008cba;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
     }
-    footer strong { display: block; margin-bottom: .6rem }
-    footer ul { padding-left: 1.1rem }
-    footer li {
-      margin-bottom: .5rem;
-      color: #bbb;
+    .options button:hover {
+      background: #005f5f;
     }
-    footer li::marker { color: #0d5efd }
+    #start-btn, #restart-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      background: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+    #start-btn:hover, #restart-btn:hover {
+      background: #357a38;
+    }
+    #result p {
+      margin-top: 10px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
-
-  <div class="topbar"><span>Fact-Check</span> • Health &amp; Wellness</div>
-  <div class="accent"></div>
-
-  <main class="wrapper">
-
-    <h1>Alkaline Water: Does High-pH Water Provide Special Health Benefits?</h1>
-
-    <div class="verdict">
-      <div class="verdict-badge">FALSE</div>
-      <p>No quality evidence shows that alkaline water changes body pH, prevents disease, or hydrates better than plain water.</p>
+  <div id="quiz-container">
+    <div id="welcome-screen">
+      <h1>Discover Your Philosophy Type</h1>
+      <p>Answer these questions to find out which philosophy fits you best.</p>
+      <button id="start-btn">Start Quiz</button>
     </div>
-
-    <section class="card">
-      <h2>How It’s Marketed</h2>
-      <p>Bottles show “pH 9+” labels, buzzwords like “ionized” or “micro-clustered,” and influencer posts. It looks scientific; it is not.</p>
-    </section>
-
-    <h2>Claims vs Evidence</h2>
-    <div class="two-cols">
-      <div class="card">
-        <ul>
-          <li><span class="claim">Balances body pH</span><br><span class="debunk">Evidence:</span> Blood pH stays near 7.4. Stomach acid neutralizes any extra alkali.</li>
-          <li><span class="claim">Treats or prevents cancer</span><br><span class="debunk">Evidence:</span> No human trials. Tumor acidity is a result, not a cause.</li>
-          <li><span class="claim">Anti-aging antioxidant</span><br><span class="debunk">Evidence:</span> Any antioxidant effect is tiny. Diet and exercise matter more.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <ul>
-          <li><span class="claim">Better hydration</span><br><span class="debunk">Evidence:</span> Hydration depends on fluid volume and electrolytes. “Micro-clustered” is marketing.</li>
-          <li><span class="claim">Aids detox, immunity</span><br><span class="debunk">Evidence:</span> Liver and kidneys already handle detox. Stomach acid removes alkalinity.</li>
-        </ul>
-      </div>
+    <div id="question-screen" style="display:none;">
+      <div id="progress"></div>
+      <div id="question" class="question"></div>
+      <div id="options" class="options"></div>
     </div>
+    <div id="result-screen" style="display:none;">
+      <h2>Your Philosophy Type</h2>
+      <div id="result"></div>
+      <button id="restart-btn">Retake Quiz</button>
+    </div>
+  </div>
+  <script>
+    const questions = [
+      {
+        question: "When making a moral choice, what matters most to you?",
+        options: [
+          { text: "Maximizing happiness for all", scores: { Utilitarianism: 1 } },
+          { text: "Following clear moral rules", scores: { Deontology: 1 } },
+          { text: "Building good character", scores: { "Virtue Ethics": 1 } },
+          { text: "Embracing personal freedom", scores: { Existentialism: 1 } },
+          { text: "Keeping calm under pressure", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Which trait do you admire most in a leader?",
+        options: [
+          { text: "Ability to bring the greatest benefit", scores: { Utilitarianism: 1 } },
+          { text: "Unwavering integrity", scores: { Deontology: 1 } },
+          { text: "Wise judgment", scores: { "Virtue Ethics": 1 } },
+          { text: "Authentic vision", scores: { Existentialism: 1 } },
+          { text: "Steadfast resilience", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "What gives life its meaning?",
+        options: [
+          { text: "Positive impact on others", scores: { Utilitarianism: 1 } },
+          { text: "Living by duty", scores: { Deontology: 1 } },
+          { text: "Practicing virtues", scores: { "Virtue Ethics": 1 } },
+          { text: "Creating my own purpose", scores: { Existentialism: 1 } },
+          { text: "Finding inner peace", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Faced with hardship, you would...",
+        options: [
+          { text: "Look for the best outcome for many", scores: { Utilitarianism: 1 } },
+          { text: "Do what duty demands", scores: { Deontology: 1 } },
+          { text: "Grow stronger in character", scores: { "Virtue Ethics": 1 } },
+          { text: "Accept it as your own choice", scores: { Existentialism: 1 } },
+          { text: "Maintain calm acceptance", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Justice means...",
+        options: [
+          { text: "Fair distribution of happiness", scores: { Utilitarianism: 1 } },
+          { text: "Upholding equal rules", scores: { Deontology: 1 } },
+          { text: "Honoring virtuous behavior", scores: { "Virtue Ethics": 1 } },
+          { text: "Respecting individual choice", scores: { Existentialism: 1 } },
+          { text: "Guided by rational principles", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Happiness is achieved by...",
+        options: [
+          { text: "Maximizing pleasure overall", scores: { Utilitarianism: 1 } },
+          { text: "Fulfilling moral obligations", scores: { Deontology: 1 } },
+          { text: "Cultivating good habits", scores: { "Virtue Ethics": 1 } },
+          { text: "Expressing true self", scores: { Existentialism: 1 } },
+          { text: "Controlling desires", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "What matters most in life?",
+        options: [
+          { text: "Greatest benefit for all", scores: { Utilitarianism: 1 } },
+          { text: "Moral righteousness", scores: { Deontology: 1 } },
+          { text: "Virtuous character", scores: { "Virtue Ethics": 1 } },
+          { text: "Own freedom", scores: { Existentialism: 1 } },
+          { text: "Inner strength", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Knowledge comes from...",
+        options: [
+          { text: "Measuring outcomes", scores: { Utilitarianism: 1 } },
+          { text: "Discovering duty", scores: { Deontology: 1 } },
+          { text: "Practical wisdom", scores: { "Virtue Ethics": 1 } },
+          { text: "Personal insight", scores: { Existentialism: 1 } },
+          { text: "Rational thought", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Emotions are...",
+        options: [
+          { text: "Useful if they increase well being", scores: { Utilitarianism: 1 } },
+          { text: "Valid if they match duty", scores: { Deontology: 1 } },
+          { text: "Signs of character", scores: { "Virtue Ethics": 1 } },
+          { text: "Key to authenticity", scores: { Existentialism: 1 } },
+          { text: "To be moderated by reason", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Rules should be...",
+        options: [
+          { text: "Flexible for best result", scores: { Utilitarianism: 1 } },
+          { text: "Absolute", scores: { Deontology: 1 } },
+          { text: "Guides for virtue", scores: { "Virtue Ethics": 1 } },
+          { text: "Challenged for freedom", scores: { Existentialism: 1 } },
+          { text: "Tools for rational living", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "The greatest virtue is...",
+        options: [
+          { text: "Compassion", scores: { Utilitarianism: 1 } },
+          { text: "Honesty", scores: { Deontology: 1 } },
+          { text: "Courage", scores: { "Virtue Ethics": 1 } },
+          { text: "Authenticity", scores: { Existentialism: 1 } },
+          { text: "Self control", scores: { Stoicism: 1 } }
+        ]
+      },
+      {
+        question: "Free will means...",
+        options: [
+          { text: "Choosing the best outcome", scores: { Utilitarianism: 1 } },
+          { text: "Acting from moral law", scores: { Deontology: 1 } },
+          { text: "Developing habit of virtue", scores: { "Virtue Ethics": 1 } },
+          { text: "Defining your own path", scores: { Existentialism: 1 } },
+          { text: "Choosing attitude toward fate", scores: { Stoicism: 1 } }
+        ]
+      }
+    ];
 
-    <section class="card">
-      <h2>Study Summary</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Study</th>
-            <th>Year</th>
-            <th>Focus</th>
-            <th>Findings</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mayo Clinic</td>
-            <td>2022</td>
-            <td>Hydration comparison</td>
-            <td>No advantage over tap water</td>
-          </tr>
-          <tr>
-            <td>Fenton &amp; Huang</td>
-            <td>2016</td>
-            <td>Alkaline diet review</td>
-            <td>Body pH not affected by diet</td>
-          </tr>
-          <tr>
-            <td>Nieva (UNC)</td>
-            <td>2018</td>
-            <td>Cancer and pH</td>
-            <td>No support for treatment claims</td>
-          </tr>
-          <tr>
-            <td>Cleveland Clinic</td>
-            <td>2021</td>
-            <td>Health benefits overview</td>
-            <td>No proven benefits</td>
-          </tr>
-          <tr>
-            <td>Truth in Advertising</td>
-            <td>2019</td>
-            <td>Marketing claims</td>
-            <td>Multiple lawsuits filed</td>
-          </tr>
-          <tr>
-            <td>WHO</td>
-            <td>2022</td>
-            <td>Water quality guidelines</td>
-            <td>No pH-based health criteria</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    const philosophies = {
+      Utilitarianism: 'Utilitarianism judges actions by their impact on overall well being.',
+      Deontology: 'Deontology focuses on duty and following moral rules.',
+      'Virtue Ethics': 'Virtue Ethics emphasizes character traits and moral virtues.',
+      Existentialism: 'Existentialism highlights individual freedom and creating personal meaning.',
+      Stoicism: 'Stoicism teaches self control and rational acceptance of events.'
+    };
 
-    <section class="card">
-      <h2>Regulatory Actions</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Brand</th>
-            <th>Year</th>
-            <th>Outcome</th>
-            <th>Claim</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Essentia</td>
-            <td>2018</td>
-            <td>Marketing copy revised</td>
-            <td>“More hydrating”</td>
-          </tr>
-          <tr>
-            <td>Alkame</td>
-            <td>2021</td>
-            <td>Refunds issued</td>
-            <td>Cancer prevention</td>
-          </tr>
-          <tr>
-            <td>True Water</td>
-            <td>2024</td>
-            <td>$1 million settlement</td>
-            <td>Detox claims</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    let current = 0;
+    let scores = {
+      Utilitarianism: 0,
+      Deontology: 0,
+      'Virtue Ethics': 0,
+      Existentialism: 0,
+      Stoicism: 0
+    };
 
-    <section class="card">
-      <h2>Hydration Index by pH</h2>
-      <figure>
-        <svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
-          <!-- axes -->
-          <line x1="60" y1="20" x2="60" y2="200" stroke="#e0e0e0" stroke-width="2"/>
-          <line x1="60" y1="200" x2="360" y2="200" stroke="#e0e0e0" stroke-width="2"/>
-          <!-- bars -->
-          <rect x="140" y="108" width="80" height="92" fill="#0d5efd"/>
-          <rect x="260" y="132" width="80" height="68" fill="#0d5efd"/>
-          <!-- labels -->
-          <text x="180" y="225" font-size="12" fill="#e0e0e0">Plain Water</text>
-          <text x="290" y="225" font-size="12" fill="#e0e0e0">Alkaline Water</text>
-          <text x="10" y="110" font-size="12" fill="#e0e0e0" transform="rotate(-90 10,110)">Viscosity Reduction (%)</text>
-          <text x="130" y="195" font-size="12" fill="#e0e0e0">3.3%</text>
-          <text x="250" y="170" font-size="12" fill="#e0e0e0">6.3%</text>
-        </svg>
-        <figcaption>After exercise-induced dehydration, alkaline water reduced blood viscosity by 6.3% vs. 3.3% for plain water (100 adults study, 2021).</figcaption>
-      </figure>
-    </section>
+    document.getElementById('start-btn').addEventListener('click', startQuiz);
+    document.getElementById('restart-btn').addEventListener('click', restartQuiz);
 
-    <section class="card">
-      <h2>Blood pH Regulation Over Time</h2>
-      <figure>
-        <svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
-          <!-- axes -->
-          <line x1="60" y1="20" x2="60" y2="200" stroke="#e0e0e0" stroke-width="2"/>
-          <line x1="60" y1="200" x2="360" y2="200" stroke="#e0e0e0" stroke-width="2"/>
-          <!-- constant line at pH 7.4 -->
-          <line x1="60" y1="100" x2="360" y2="100" stroke="#ffd04f" stroke-width="3"/>
-          <!-- points -->
-          <circle cx="60" cy="100" r="4" fill="#ffd04f"/>
-          <circle cx="160" cy="100" r="4" fill="#ffd04f"/>
-          <circle cx="260" cy="100" r="4" fill="#ffd04f"/>
-          <circle cx="360" cy="100" r="4" fill="#ffd04f"/>
-          <!-- labels -->
-          <text x="55" y="220" font-size="12" fill="#e0e0e0">0 min</text>
-          <text x="155" y="220" font-size="12" fill="#e0e0e0">10 min</text>
-          <text x="255" y="220" font-size="12" fill="#e0e0e0">30 min</text>
-          <text x="355" y="220" font-size="12" fill="#e0e0e0">60 min</text>
-          <text x="10" y="110" font-size="12" fill="#e0e0e0" transform="rotate(-90 10,110)">Blood pH</text>
-        </svg>
-        <figcaption>Blood pH remains at ~7.40 over 60 minutes after drinking alkaline water, showing tight physiological buffering.</figcaption>
-      </figure>
-    </section>
+    function startQuiz() {
+      document.getElementById('welcome-screen').style.display = 'none';
+      document.getElementById('question-screen').style.display = 'block';
+      showQuestion();
+    }
 
-    <section class="card">
-      <h2>Takeaway</h2>
-      <p>High-pH water gives no real benefit over clean water. Drink enough fluids, eat a balanced diet, and your body will manage pH on its own.</p>
-    </section>
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById('progress').textContent = `Question ${current + 1} of ${questions.length}`;
+      document.getElementById('question').textContent = q.question;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt.text;
+        btn.onclick = () => selectOption(opt.scores);
+        optionsDiv.appendChild(btn);
+      });
+    }
 
-    <footer>
-      <strong>Key Sources</strong>
-      <ul>
-        <li>Mayo Clinic Staff. “Alkaline Water: Better than Plain Water?” (2022)</li>
-        <li>Fenton T.R., Huang T. “Review of the Alkaline Diet.” <em>J. Environ. Public Health</em> (2016)</li>
-        <li>Nieva J. “Alkaline Water and Cancer—Facts.” UNC Lineberger (2018)</li>
-        <li>Cleveland Clinic Health Essentials. “Is Alkaline Water Better for You?” (2021)</li>
-        <li>Truth in Advertising. “Alkaline Water Lawsuit Overview.” (2019)</li>
-        <li>WHO. “Guidelines for Drinking-Water Quality” (2022)</li>
-      </ul>
-    </footer>
+    function selectOption(scoreObj) {
+      for (let key in scoreObj) {
+        scores[key] += scoreObj[key];
+      }
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
 
-  </main>
+    function showResult() {
+      document.getElementById('question-screen').style.display = 'none';
+      document.getElementById('result-screen').style.display = 'block';
+      let max = -1;
+      let winner = '';
+      for (let key in scores) {
+        if (scores[key] > max) {
+          max = scores[key];
+          winner = key;
+        }
+      }
+      document.getElementById('result').innerHTML = `<h3>${winner}</h3><p>${philosophies[winner]}</p>`;
+    }
 
+    function restartQuiz() {
+      current = 0;
+      for (let key in scores) scores[key] = 0;
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('welcome-screen').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
