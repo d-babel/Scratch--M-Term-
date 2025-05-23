@@ -12,83 +12,110 @@
       padding: 20px;
       display: flex;
       justify-content: center;
-      line-height: 1.5;
+      line-height: 1.6;
+      font-size: 18px;
     }
     #quiz-container {
       background: #fff;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      max-width: 600px;
+      max-width: 700px;
       width: 100%;
     }
     h1, h2, h3 {
       text-align: center;
       color: #2c3e50;
+      font-size: 1.8em;
     }
     #progress {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 20px;
       color: #2c3e50;
+      text-align: center;
+      padding: 10px;
+      background: #e8f4f8;
+      border-radius: 5px;
     }
     .question {
-      margin-bottom: 15px;
-      font-size: 18px;
+      margin-bottom: 20px;
+      font-size: 22px;
       font-weight: 600;
       color: #2c3e50;
+      text-align: center;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      border-left: 5px solid #008cba;
     }
     .options button {
       display: block;
       width: 100%;
-      margin: 8px 0;
-      padding: 12px;
-      border: 2px solid #008cba;
-      border-radius: 4px;
+      margin: 12px 0;
+      padding: 18px;
+      border: 3px solid #008cba;
+      border-radius: 6px;
       background: #008cba;
       color: #fff;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       text-align: left;
+      position: relative;
     }
     .options button:hover {
       background: #005f5f;
       border-color: #005f5f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     .options button:focus {
-      outline: 3px solid #ff6b35;
-      outline-offset: 2px;
+      outline: 4px solid #ff6b35;
+      outline-offset: 3px;
       background: #005f5f;
       border-color: #005f5f;
     }
+    .options button::before {
+      content: counter(option-counter, upper-alpha) ". ";
+      counter-increment: option-counter;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .options {
+      counter-reset: option-counter;
+    }
     #start-btn, #restart-btn {
       display: block;
-      margin: 20px auto;
-      padding: 12px 24px;
-      font-size: 18px;
-      border: 2px solid #4CAF50;
-      border-radius: 4px;
+      margin: 25px auto;
+      padding: 18px 30px;
+      font-size: 20px;
+      font-weight: bold;
+      border: 3px solid #4CAF50;
+      border-radius: 6px;
       background: #4CAF50;
       color: #fff;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     #start-btn:hover, #restart-btn:hover {
       background: #357a38;
       border-color: #357a38;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     #start-btn:focus, #restart-btn:focus {
-      outline: 3px solid #ff6b35;
-      outline-offset: 2px;
+      outline: 4px solid #ff6b35;
+      outline-offset: 3px;
       background: #357a38;
       border-color: #357a38;
     }
     #result p {
-      margin-top: 10px;
+      margin-top: 15px;
       text-align: left;
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 18px;
+      line-height: 1.7;
     }
     .sr-only {
       position: absolute;
@@ -102,9 +129,14 @@
       border: 0;
     }
     #feedback {
-      margin-top: 10px;
+      margin-top: 15px;
       font-weight: bold;
       color: #2c3e50;
+      font-size: 18px;
+      padding: 12px;
+      background: #e8f5e8;
+      border-radius: 5px;
+      text-align: center;
     }
     .skip-link {
       position: absolute;
@@ -116,22 +148,146 @@
       text-decoration: none;
       border-radius: 4px;
       z-index: 1000;
+      font-weight: bold;
     }
     .skip-link:focus {
       top: 6px;
+    }
+    .visual-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #4CAF50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .text-size-controls {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+    .text-size-btn {
+      padding: 8px 12px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .text-size-btn:hover, .text-size-btn:focus {
+      background: #34495e;
+      outline: 2px solid #ff6b35;
+    }
+    .high-contrast {
+      background: #000 !important;
+      color: #fff !important;
+    }
+    .high-contrast #quiz-container {
+      background: #000 !important;
+      color: #fff !important;
+      border: 3px solid #fff;
+    }
+    .high-contrast .options button {
+      background: #fff !important;
+      color: #000 !important;
+      border-color: #fff !important;
+    }
+    .high-contrast .options button:hover,
+    .high-contrast .options button:focus {
+      background: #ffff00 !important;
+      color: #000 !important;
+    }
+    .contrast-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      width: 50px;
+      height: 50px;
+      z-index: 1000;
+    }
+    .contrast-toggle:hover, .contrast-toggle:focus {
+      background: #34495e;
+      outline: 3px solid #ff6b35;
+    }
+    .braille-ready {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.1em;
+    }
+    .large-text {
+      font-size: 1.2em;
+    }
+    .xl-text {
+      font-size: 1.5em;
+    }
+    .reading-guide {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ff6b35, transparent);
+      pointer-events: none;
+      z-index: 999;
+      display: none;
     }
   </style>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
   
+  <!-- Accessibility Controls -->
+  <div class="text-size-controls">
+    <button class="text-size-btn" onclick="adjustTextSize('normal')" aria-label="Normal text size">A</button>
+    <button class="text-size-btn large-text" onclick="adjustTextSize('large')" aria-label="Large text size">A</button>
+    <button class="text-size-btn xl-text" onclick="adjustTextSize('xl')" aria-label="Extra large text size">A</button>
+  </div>
+  
+  <button class="contrast-toggle" onclick="toggleHighContrast()" aria-label="Toggle high contrast mode">◐</button>
+  
+  <div class="visual-indicator" id="status-indicator" aria-hidden="true">●</div>
+  <div class="reading-guide" id="reading-guide"></div>
+  
   <div id="quiz-container">
-    <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+    <div aria-live="assertive" aria-atomic="true" class="sr-only" id="announcements"></div>
+    <div aria-live="polite" class="sr-only" id="progress-announcements"></div>
     
     <main id="main-content">
       <section id="welcome-screen" aria-labelledby="welcome-heading">
         <h1 id="welcome-heading">Discover Your Philosophy Type</h1>
+        <div style="text-align: center; margin: 20px 0; padding: 15px; background: #e8f4f8; border-radius: 5px;">
+          <p><strong>Accessibility Features Available:</strong></p>
+          <p>• Text size adjustment (top-left buttons)</p>
+          <p>• High contrast mode (bottom-right button)</p>
+          <p>• Full keyboard navigation</p>
+          <p>• Screen reader optimized</p>
+          <p>• Visual progress indicators</p>
+        </div>
         <p>Answer these questions to find out which philosophy fits you best. This quiz contains 12 questions and should take approximately 5 minutes to complete.</p>
+        <p><strong>Instructions:</strong> Use Tab to navigate, Enter or Space to select answers. All content is available to screen readers and braille displays.</p>
         <button id="start-btn" aria-describedby="quiz-description">Start Quiz</button>
         <p id="quiz-description" class="sr-only">Begin the philosophy quiz to discover your philosophical alignment</p>
       </section>
@@ -139,6 +295,7 @@
       <section id="question-screen" style="display:none;" aria-labelledby="current-question" role="region" aria-label="Quiz Questions">
         <div id="progress" aria-live="polite"></div>
         <h2 id="current-question" class="question"></h2>
+        <p class="sr-only" id="instruction-text">Choose one of the following options using Tab to navigate and Enter to select:</p>
         <fieldset id="options" class="options">
           <legend class="sr-only">Answer options</legend>
         </fieldset>
@@ -295,6 +452,10 @@
       Stoicism: 0
     };
 
+    // Accessibility features
+    let textSize = 'normal';
+    let highContrast = false;
+
     // Add keyboard event listeners
     document.addEventListener('keydown', handleGlobalKeydown);
     document.getElementById('start-btn').addEventListener('click', startQuiz);
@@ -305,6 +466,44 @@
       if (event.key === 'Escape' && document.getElementById('result-screen').style.display !== 'none') {
         restartQuiz();
       }
+      
+      // Number key shortcuts for options (1-5)
+      if (event.key >= '1' && event.key <= '5' && document.getElementById('question-screen').style.display !== 'none') {
+        const optionIndex = parseInt(event.key) - 1;
+        const buttons = document.querySelectorAll('#options button');
+        if (buttons[optionIndex]) {
+          buttons[optionIndex].click();
+        }
+      }
+    }
+
+    function adjustTextSize(size) {
+      const body = document.body;
+      body.classList.remove('large-text', 'xl-text');
+      
+      if (size === 'large') {
+        body.classList.add('large-text');
+        textSize = 'large';
+      } else if (size === 'xl') {
+        body.classList.add('xl-text');
+        textSize = 'xl';
+      } else {
+        textSize = 'normal';
+      }
+      
+      announceToScreenReader(`Text size changed to ${size}`);
+    }
+
+    function toggleHighContrast() {
+      highContrast = !highContrast;
+      document.body.classList.toggle('high-contrast', highContrast);
+      announceToScreenReader(`High contrast mode ${highContrast ? 'enabled' : 'disabled'}`);
+    }
+
+    function updateStatusIndicator(status) {
+      const indicator = document.getElementById('status-indicator');
+      indicator.textContent = status;
+      indicator.style.background = status === '●' ? '#4CAF50' : '#ff6b35';
     }
 
     function announceToScreenReader(message) {
@@ -316,9 +515,18 @@
       }, 1000);
     }
 
+    function announceProgress(message) {
+      const progressAnnouncements = document.getElementById('progress-announcements');
+      progressAnnouncements.textContent = message;
+      setTimeout(() => {
+        progressAnnouncements.textContent = '';
+      }, 2000);
+    }
+
     function startQuiz() {
       document.getElementById('welcome-screen').style.display = 'none';
       document.getElementById('question-screen').style.display = 'block';
+      updateStatusIndicator('?');
       announceToScreenReader('Quiz started. Question 1 of 12.');
       showQuestion();
     }
@@ -331,12 +539,13 @@
       document.getElementById('current-question').textContent = q.question;
       
       const optionsFieldset = document.getElementById('options');
-      optionsFieldset.innerHTML = '<legend class="sr-only">Answer options</legend>';
+      optionsFieldset.innerHTML = '<legend class="sr-only">Answer options - Use Tab to navigate, Enter to select, or press number keys 1-5</legend>';
       
       q.options.forEach((opt, index) => {
         const btn = document.createElement('button');
         btn.textContent = opt.text;
         btn.setAttribute('aria-describedby', `option-${index}-desc`);
+        btn.setAttribute('aria-label', `Option ${index + 1}: ${opt.text}`);
         btn.onclick = () => selectOption(opt.scores, opt.text);
         btn.onkeydown = (event) => {
           if (event.key === 'Enter' || event.key === ' ') {
@@ -349,11 +558,14 @@
         const desc = document.createElement('span');
         desc.id = `option-${index}-desc`;
         desc.className = 'sr-only';
-        desc.textContent = `Option ${index + 1} of ${q.options.length}`;
+        desc.textContent = `Option ${index + 1} of ${q.options.length}. Press ${index + 1} for quick selection.`;
         
         optionsFieldset.appendChild(btn);
         optionsFieldset.appendChild(desc);
       });
+      
+      // Announce question details
+      announceProgress(`${progressText}. ${q.question}. ${q.options.length} options available.`);
       
       // Focus first option button for keyboard users
       setTimeout(() => {
@@ -369,26 +581,34 @@
         scores[key] += scoreObj[key];
       }
       
-      // Provide feedback
+      // Provide comprehensive feedback
       const feedback = document.getElementById('feedback');
-      feedback.textContent = `You selected: ${selectedText}`;
+      feedback.textContent = `✓ Selected: ${selectedText}`;
       
-      announceToScreenReader(`You selected: ${selectedText}. Moving to next question.`);
+      updateStatusIndicator('✓');
+      
+      const nextText = current + 1 < questions.length ? 
+        `Moving to question ${current + 2} of ${questions.length}` : 
+        'Moving to results';
+      
+      announceToScreenReader(`You selected: ${selectedText}. ${nextText}.`);
       
       current++;
       
       setTimeout(() => {
         if (current < questions.length) {
+          updateStatusIndicator('?');
           showQuestion();
         } else {
           showResult();
         }
-      }, 1000);
+      }, 1500);
     }
 
     function showResult() {
       document.getElementById('question-screen').style.display = 'none';
       document.getElementById('result-screen').style.display = 'block';
+      updateStatusIndicator('★');
       
       let max = -1;
       let winner = '';
@@ -403,15 +623,22 @@
       resultDiv.innerHTML = `
         <h3>${winner}</h3>
         <p>${philosophies[winner]}</p>
-        <p><strong>Your score breakdown:</strong></p>
-        <ul>
-          ${Object.entries(scores).map(([philosophy, score]) => 
-            `<li>${philosophy}: ${score} points</li>`
-          ).join('')}
-        </ul>
+        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+          <p><strong>Your detailed score breakdown:</strong></p>
+          <ul style="font-size: 16px; line-height: 1.6;">
+            ${Object.entries(scores)
+              .sort(([,a], [,b]) => b - a)
+              .map(([philosophy, score]) => 
+                `<li><strong>${philosophy}:</strong> ${score} points${philosophy === winner ? ' (Your top match!)' : ''}</li>`
+              ).join('')}
+          </ul>
+        </div>
+        <div style="margin-top: 15px; padding: 10px; background: #e8f4f8; border-radius: 5px; text-align: center;">
+          <p><strong>Quiz completed successfully!</strong> Press Tab to navigate to the retake button, or press Escape to restart immediately.</p>
+        </div>
       `;
       
-      announceToScreenReader(`Quiz completed. Your philosophy type is ${winner}.`);
+      announceToScreenReader(`Quiz completed. Your philosophy type is ${winner}. You scored ${max} points in ${winner}.`);
       
       // Focus the restart button for keyboard users
       setTimeout(() => {
@@ -426,6 +653,7 @@
       document.getElementById('result-screen').style.display = 'none';
       document.getElementById('welcome-screen').style.display = 'block';
       document.getElementById('feedback').textContent = '';
+      updateStatusIndicator('●');
       
       announceToScreenReader('Quiz restarted. Ready to begin again.');
       
@@ -434,6 +662,9 @@
         document.getElementById('start-btn').focus();
       }, 100);
     }
+
+    // Initialize status indicator
+    updateStatusIndicator('●');
   </script>
 </body>
 </html>
