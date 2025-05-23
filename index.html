@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Philosophy Quiz Akinator</title>
+  <title>Philosophy Quiz - Discover Your Philosophy Type</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,6 +12,7 @@
       padding: 20px;
       display: flex;
       justify-content: center;
+      line-height: 1.5;
     }
     #quiz-container {
       background: #fff;
@@ -23,68 +24,136 @@
     }
     h1, h2, h3 {
       text-align: center;
+      color: #2c3e50;
     }
     #progress {
       margin-bottom: 10px;
       font-weight: bold;
+      font-size: 18px;
+      color: #2c3e50;
     }
     .question {
       margin-bottom: 15px;
       font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
     }
     .options button {
       display: block;
       width: 100%;
       margin: 8px 0;
-      padding: 10px;
-      border: none;
+      padding: 12px;
+      border: 2px solid #008cba;
       border-radius: 4px;
       background: #008cba;
       color: #fff;
       font-size: 16px;
       cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
     }
     .options button:hover {
       background: #005f5f;
+      border-color: #005f5f;
+    }
+    .options button:focus {
+      outline: 3px solid #ff6b35;
+      outline-offset: 2px;
+      background: #005f5f;
+      border-color: #005f5f;
     }
     #start-btn, #restart-btn {
       display: block;
       margin: 20px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: 2px solid #4CAF50;
       border-radius: 4px;
       background: #4CAF50;
       color: #fff;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
     #start-btn:hover, #restart-btn:hover {
       background: #357a38;
+      border-color: #357a38;
+    }
+    #start-btn:focus, #restart-btn:focus {
+      outline: 3px solid #ff6b35;
+      outline-offset: 2px;
+      background: #357a38;
+      border-color: #357a38;
     }
     #result p {
       margin-top: 10px;
       text-align: left;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    #feedback {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: #000;
+      color: #fff;
+      padding: 8px;
+      text-decoration: none;
+      border-radius: 4px;
+      z-index: 1000;
+    }
+    .skip-link:focus {
+      top: 6px;
     }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
   <div id="quiz-container">
-    <div id="welcome-screen">
-      <h1>Discover Your Philosophy Type</h1>
-      <p>Answer these questions to find out which philosophy fits you best.</p>
-      <button id="start-btn">Start Quiz</button>
-    </div>
-    <div id="question-screen" style="display:none;">
-      <div id="progress"></div>
-      <div id="question" class="question"></div>
-      <div id="options" class="options"></div>
-    </div>
-    <div id="result-screen" style="display:none;">
-      <h2>Your Philosophy Type</h2>
-      <div id="result"></div>
-      <button id="restart-btn">Retake Quiz</button>
-    </div>
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+    
+    <main id="main-content">
+      <section id="welcome-screen" aria-labelledby="welcome-heading">
+        <h1 id="welcome-heading">Discover Your Philosophy Type</h1>
+        <p>Answer these questions to find out which philosophy fits you best. This quiz contains 12 questions and should take approximately 5 minutes to complete.</p>
+        <button id="start-btn" aria-describedby="quiz-description">Start Quiz</button>
+        <p id="quiz-description" class="sr-only">Begin the philosophy quiz to discover your philosophical alignment</p>
+      </section>
+      
+      <section id="question-screen" style="display:none;" aria-labelledby="current-question" role="region" aria-label="Quiz Questions">
+        <div id="progress" aria-live="polite"></div>
+        <h2 id="current-question" class="question"></h2>
+        <fieldset id="options" class="options">
+          <legend class="sr-only">Answer options</legend>
+        </fieldset>
+        <div id="feedback" aria-live="polite"></div>
+      </section>
+      
+      <section id="result-screen" style="display:none;" aria-labelledby="result-heading" role="region" aria-label="Quiz Results">
+        <h2 id="result-heading">Your Philosophy Type</h2>
+        <div id="result" aria-live="polite"></div>
+        <button id="restart-btn" aria-describedby="restart-description">Retake Quiz</button>
+        <p id="restart-description" class="sr-only">Start the quiz over from the beginning</p>
+      </section>
+    </main>
   </div>
+  
   <script>
     const questions = [
       {
@@ -210,11 +279,11 @@
     ];
 
     const philosophies = {
-      Utilitarianism: 'Utilitarianism judges actions by their impact on overall well being.',
-      Deontology: 'Deontology focuses on duty and following moral rules.',
-      'Virtue Ethics': 'Virtue Ethics emphasizes character traits and moral virtues.',
-      Existentialism: 'Existentialism highlights individual freedom and creating personal meaning.',
-      Stoicism: 'Stoicism teaches self control and rational acceptance of events.'
+      Utilitarianism: 'Utilitarianism judges actions by their impact on overall well-being. This philosophy, developed by philosophers like Jeremy Bentham and John Stuart Mill, focuses on maximizing happiness and minimizing suffering for the greatest number of people.',
+      Deontology: 'Deontology focuses on duty and following moral rules regardless of consequences. Founded by Immanuel Kant, this ethical theory emphasizes that certain actions are inherently right or wrong based on moral principles.',
+      'Virtue Ethics': 'Virtue Ethics emphasizes character traits and moral virtues rather than actions or consequences. Originating with Aristotle, this approach focuses on developing good character and practicing virtues like courage, honesty, and compassion.',
+      Existentialism: 'Existentialism highlights individual freedom, choice, and creating personal meaning in life. Philosophers like Jean-Paul Sartre and Simone de Beauvoir emphasized that humans are free to define their own essence and purpose.',
+      Stoicism: 'Stoicism teaches self-control, rational thinking, and acceptance of what cannot be changed. Ancient philosophers like Marcus Aurelius and Epictetus advocated for focusing on what is within our control while accepting external circumstances.'
     };
 
     let current = 0;
@@ -226,44 +295,101 @@
       Stoicism: 0
     };
 
+    // Add keyboard event listeners
+    document.addEventListener('keydown', handleGlobalKeydown);
     document.getElementById('start-btn').addEventListener('click', startQuiz);
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+    function handleGlobalKeydown(event) {
+      // Allow Escape key to restart quiz if on result screen
+      if (event.key === 'Escape' && document.getElementById('result-screen').style.display !== 'none') {
+        restartQuiz();
+      }
+    }
+
+    function announceToScreenReader(message) {
+      const announcements = document.getElementById('announcements');
+      announcements.textContent = message;
+      // Clear after announcement to allow repeated messages
+      setTimeout(() => {
+        announcements.textContent = '';
+      }, 1000);
+    }
 
     function startQuiz() {
       document.getElementById('welcome-screen').style.display = 'none';
       document.getElementById('question-screen').style.display = 'block';
+      announceToScreenReader('Quiz started. Question 1 of 12.');
       showQuestion();
     }
 
     function showQuestion() {
       const q = questions[current];
-      document.getElementById('progress').textContent = `Question ${current + 1} of ${questions.length}`;
-      document.getElementById('question').textContent = q.question;
-      const optionsDiv = document.getElementById('options');
-      optionsDiv.innerHTML = '';
-      q.options.forEach(opt => {
+      const progressText = `Question ${current + 1} of ${questions.length}`;
+      
+      document.getElementById('progress').textContent = progressText;
+      document.getElementById('current-question').textContent = q.question;
+      
+      const optionsFieldset = document.getElementById('options');
+      optionsFieldset.innerHTML = '<legend class="sr-only">Answer options</legend>';
+      
+      q.options.forEach((opt, index) => {
         const btn = document.createElement('button');
         btn.textContent = opt.text;
-        btn.onclick = () => selectOption(opt.scores);
-        optionsDiv.appendChild(btn);
+        btn.setAttribute('aria-describedby', `option-${index}-desc`);
+        btn.onclick = () => selectOption(opt.scores, opt.text);
+        btn.onkeydown = (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            selectOption(opt.scores, opt.text);
+          }
+        };
+        
+        // Add hidden description for screen readers
+        const desc = document.createElement('span');
+        desc.id = `option-${index}-desc`;
+        desc.className = 'sr-only';
+        desc.textContent = `Option ${index + 1} of ${q.options.length}`;
+        
+        optionsFieldset.appendChild(btn);
+        optionsFieldset.appendChild(desc);
       });
+      
+      // Focus first option button for keyboard users
+      setTimeout(() => {
+        const firstButton = optionsFieldset.querySelector('button');
+        if (firstButton) {
+          firstButton.focus();
+        }
+      }, 100);
     }
 
-    function selectOption(scoreObj) {
+    function selectOption(scoreObj, selectedText) {
       for (let key in scoreObj) {
         scores[key] += scoreObj[key];
       }
+      
+      // Provide feedback
+      const feedback = document.getElementById('feedback');
+      feedback.textContent = `You selected: ${selectedText}`;
+      
+      announceToScreenReader(`You selected: ${selectedText}. Moving to next question.`);
+      
       current++;
-      if (current < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
+      
+      setTimeout(() => {
+        if (current < questions.length) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 1000);
     }
 
     function showResult() {
       document.getElementById('question-screen').style.display = 'none';
       document.getElementById('result-screen').style.display = 'block';
+      
       let max = -1;
       let winner = '';
       for (let key in scores) {
@@ -272,14 +398,41 @@
           winner = key;
         }
       }
-      document.getElementById('result').innerHTML = `<h3>${winner}</h3><p>${philosophies[winner]}</p>`;
+      
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <h3>${winner}</h3>
+        <p>${philosophies[winner]}</p>
+        <p><strong>Your score breakdown:</strong></p>
+        <ul>
+          ${Object.entries(scores).map(([philosophy, score]) => 
+            `<li>${philosophy}: ${score} points</li>`
+          ).join('')}
+        </ul>
+      `;
+      
+      announceToScreenReader(`Quiz completed. Your philosophy type is ${winner}.`);
+      
+      // Focus the restart button for keyboard users
+      setTimeout(() => {
+        document.getElementById('restart-btn').focus();
+      }, 100);
     }
 
     function restartQuiz() {
       current = 0;
       for (let key in scores) scores[key] = 0;
+      
       document.getElementById('result-screen').style.display = 'none';
       document.getElementById('welcome-screen').style.display = 'block';
+      document.getElementById('feedback').textContent = '';
+      
+      announceToScreenReader('Quiz restarted. Ready to begin again.');
+      
+      // Focus the start button
+      setTimeout(() => {
+        document.getElementById('start-btn').focus();
+      }, 100);
     }
   </script>
 </body>
