@@ -234,9 +234,68 @@
       background: #34495e;
       outline: 3px solid #ff6b35;
     }
-    .braille-ready {
-      font-family: 'Courier New', monospace;
-      letter-spacing: 0.1em;
+    .voice-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+    .voice-btn {
+      padding: 12px;
+      background: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      width: 50px;
+      height: 50px;
+      transition: all 0.3s ease;
+    }
+    .voice-btn:hover, .voice-btn:focus {
+      background: #9b59b6;
+      outline: 3px solid #ff6b35;
+      transform: scale(1.1);
+    }
+    .voice-btn.speaking {
+      background: #e74c3c;
+      animation: pulse 1s infinite;
+    }
+    .voice-btn.paused {
+      background: #f39c12;
+    }
+    .voice-settings {
+      position: fixed;
+      top: 100px;
+      left: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1001;
+      min-width: 250px;
+    }
+    .voice-settings.show {
+      display: block;
+    }
+    .voice-setting {
+      margin-bottom: 10px;
+    }
+    .voice-setting label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .voice-setting select,
+    .voice-setting input[type="range"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
     }
     .large-text {
       font-size: 1.2em;
@@ -244,15 +303,10 @@
     .xl-text {
       font-size: 1.5em;
     }
-    .reading-guide {
-      position: fixed;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #ff6b35, transparent);
-      pointer-events: none;
-      z-index: 999;
-      display: none;
+    .speaking-highlight {
+      background: #ffeb3b !important;
+      color: #000 !important;
+      border: 2px solid #ff9800 !important;
     }
   </style>
 </head>
@@ -266,10 +320,44 @@
     <button class="text-size-btn xl-text" onclick="adjustTextSize('xl')" aria-label="Extra large text size">A</button>
   </div>
   
+  <!-- Voice Controls -->
+  <div class="voice-controls">
+    <button class="voice-btn" id="voice-toggle" onclick="toggleVoice()" aria-label="Toggle voice reading" title="Play/Pause Voice">🔊</button>
+    <button class="voice-btn" id="voice-stop" onclick="stopVoice()" aria-label="Stop voice reading" title="Stop Voice">⏹</button>
+    <button class="voice-btn" id="voice-settings-btn" onclick="toggleVoiceSettings()" aria-label="Voice settings" title="Voice Settings">⚙</button>
+  </div>
+  
+  <!-- Voice Settings Panel -->
+  <div class="voice-settings" id="voice-settings">
+    <div class="voice-setting">
+      <label for="voice-select">Voice:</label>
+      <select id="voice-select" onchange="updateVoiceSettings()">
+        <option value="">Default</option>
+      </select>
+    </div>
+    <div class="voice-setting">
+      <label for="voice-rate">Speed: <span id="rate-value">1</span></label>
+      <input type="range" id="voice-rate" min="0.5" max="2" step="0.1" value="1" onchange="updateVoiceSettings()">
+    </div>
+    <div class="voice-setting">
+      <label for="voice-pitch">Pitch: <span id="pitch-value">1</span></label>
+      <input type="range" id="voice-pitch" min="0.5" max="2" step="0.1" value="1" onchange="updateVoiceSettings()">
+    </div>
+    <div class="voice-setting">
+      <label for="voice-volume">Volume: <span id="volume-value">1</span></label>
+      <input type="range" id="voice-volume" min="0" max="1" step="0.1" value="1" onchange="updateVoiceSettings()">
+    </div>
+    <div class="voice-setting">
+      <label>
+        <input type="checkbox" id="auto-read" checked onchange="updateVoiceSettings()">
+        Auto-read content
+      </label>
+    </div>
+  </div>
+  
   <button class="contrast-toggle" onclick="toggleHighContrast()" aria-label="Toggle high contrast mode">◐</button>
   
   <div class="visual-indicator" id="status-indicator" aria-hidden="true">●</div>
-  <div class="reading-guide" id="reading-guide"></div>
   
   <div id="quiz-container">
     <div aria-live="assertive" aria-atomic="true" class="sr-only" id="announcements"></div>
@@ -282,12 +370,13 @@
           <p><strong>Accessibility Features Available:</strong></p>
           <p>• Text size adjustment (top-left buttons)</p>
           <p>• High contrast mode (bottom-right button)</p>
-          <p>• Full keyboard navigation</p>
-          <p>• Screen reader optimized</p>
+          <p>• Voice reading with customizable settings (bottom-left)</p>
+          <p>• Full keyboard navigation (Tab, Enter, Space, numbers 1-5)</p>
+          <p>• Screen reader optimized with live announcements</p>
           <p>• Visual progress indicators</p>
         </div>
         <p>Answer these questions to find out which philosophy fits you best. This quiz contains 12 questions and should take approximately 5 minutes to complete.</p>
-        <p><strong>Instructions:</strong> Use Tab to navigate, Enter or Space to select answers. All content is available to screen readers and braille displays.</p>
+        <p><strong>Voice Instructions:</strong> Use the voice controls in the bottom-left corner to enable automatic reading. The speaker button plays/pauses, the stop button ends reading, and the gear button opens voice settings.</p>
         <button id="start-btn" aria-describedby="quiz-description">Start Quiz</button>
         <p id="quiz-description" class="sr-only">Begin the philosophy quiz to discover your philosophical alignment</p>
       </section>
@@ -295,7 +384,7 @@
       <section id="question-screen" style="display:none;" aria-labelledby="current-question" role="region" aria-label="Quiz Questions">
         <div id="progress" aria-live="polite"></div>
         <h2 id="current-question" class="question"></h2>
-        <p class="sr-only" id="instruction-text">Choose one of the following options using Tab to navigate and Enter to select:</p>
+        <p class="sr-only" id="instruction-text">Choose one of the following options using Tab to navigate and Enter to select, or press number keys 1-5:</p>
         <fieldset id="options" class="options">
           <legend class="sr-only">Answer options</legend>
         </fieldset>
@@ -452,14 +541,192 @@
       Stoicism: 0
     };
 
+    // Voice functionality variables
+    let synth = window.speechSynthesis;
+    let voices = [];
+    let currentUtterance = null;
+    let isVoiceEnabled = false;
+    let voiceSettings = {
+      voice: null,
+      rate: 1,
+      pitch: 1,
+      volume: 1,
+      autoRead: true
+    };
+
     // Accessibility features
     let textSize = 'normal';
     let highContrast = false;
+
+    // Initialize voice functionality
+    function initializeVoices() {
+      voices = synth.getVoices();
+      const voiceSelect = document.getElementById('voice-select');
+      voiceSelect.innerHTML = '<option value="">Default</option>';
+      
+      voices.forEach((voice, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
+      });
+    }
+
+    // Check for voice support and initialize
+    if ('speechSynthesis' in window) {
+      initializeVoices();
+      if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = initializeVoices;
+      }
+    } else {
+      console.warn('Speech synthesis not supported');
+      document.querySelector('.voice-controls').style.display = 'none';
+    }
+
+    function speakText(text, options = {}) {
+      if (!synth || !text.trim()) return;
+      
+      // Stop any current speech
+      synth.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Apply voice settings
+      if (voiceSettings.voice && voices[voiceSettings.voice]) {
+        utterance.voice = voices[voiceSettings.voice];
+      }
+      utterance.rate = voiceSettings.rate;
+      utterance.pitch = voiceSettings.pitch;
+      utterance.volume = voiceSettings.volume;
+      
+      // Event handlers
+      utterance.onstart = () => {
+        document.getElementById('voice-toggle').classList.add('speaking');
+        document.getElementById('voice-toggle').textContent = '⏸';
+        if (options.element) {
+          options.element.classList.add('speaking-highlight');
+        }
+      };
+      
+      utterance.onend = () => {
+        document.getElementById('voice-toggle').classList.remove('speaking', 'paused');
+        document.getElementById('voice-toggle').textContent = '🔊';
+        if (options.element) {
+          options.element.classList.remove('speaking-highlight');
+        }
+        currentUtterance = null;
+      };
+      
+      utterance.onerror = () => {
+        document.getElementById('voice-toggle').classList.remove('speaking', 'paused');
+        document.getElementById('voice-toggle').textContent = '🔊';
+        currentUtterance = null;
+      };
+      
+      currentUtterance = utterance;
+      synth.speak(utterance);
+    }
+
+    function toggleVoice() {
+      if (!synth) return;
+      
+      if (synth.speaking) {
+        if (synth.paused) {
+          synth.resume();
+          document.getElementById('voice-toggle').classList.remove('paused');
+          document.getElementById('voice-toggle').classList.add('speaking');
+          document.getElementById('voice-toggle').textContent = '⏸';
+        } else {
+          synth.pause();
+          document.getElementById('voice-toggle').classList.remove('speaking');
+          document.getElementById('voice-toggle').classList.add('paused');
+          document.getElementById('voice-toggle').textContent = '▶';
+        }
+      } else {
+        // Read current screen content
+        readCurrentContent();
+      }
+    }
+
+    function stopVoice() {
+      if (synth) {
+        synth.cancel();
+        document.getElementById('voice-toggle').classList.remove('speaking', 'paused');
+        document.getElementById('voice-toggle').textContent = '🔊';
+        document.querySelectorAll('.speaking-highlight').forEach(el => {
+          el.classList.remove('speaking-highlight');
+        });
+        currentUtterance = null;
+      }
+    }
+
+    function toggleVoiceSettings() {
+      const settings = document.getElementById('voice-settings');
+      settings.classList.toggle('show');
+    }
+
+    function updateVoiceSettings() {
+      const voiceSelect = document.getElementById('voice-select');
+      const rateSlider = document.getElementById('voice-rate');
+      const pitchSlider = document.getElementById('voice-pitch');
+      const volumeSlider = document.getElementById('voice-volume');
+      const autoReadCheckbox = document.getElementById('auto-read');
+      
+      voiceSettings.voice = voiceSelect.value ? parseInt(voiceSelect.value) : null;
+      voiceSettings.rate = parseFloat(rateSlider.value);
+      voiceSettings.pitch = parseFloat(pitchSlider.value);
+      voiceSettings.volume = parseFloat(volumeSlider.value);
+      voiceSettings.autoRead = autoReadCheckbox.checked;
+      
+      // Update display values
+      document.getElementById('rate-value').textContent = voiceSettings.rate;
+      document.getElementById('pitch-value').textContent = voiceSettings.pitch;
+      document.getElementById('volume-value').textContent = voiceSettings.volume;
+      
+      // Test voice with current settings
+      if (voiceSelect.value !== '' || rateSlider === document.activeElement || 
+          pitchSlider === document.activeElement || volumeSlider === document.activeElement) {
+        speakText('Voice settings updated');
+      }
+    }
+
+    function readCurrentContent() {
+      let textToRead = '';
+      
+      if (document.getElementById('welcome-screen').style.display !== 'none') {
+        textToRead = 'Philosophy Quiz. Discover Your Philosophy Type. ' + 
+                    document.querySelector('#welcome-screen p').textContent;
+      } else if (document.getElementById('question-screen').style.display !== 'none') {
+        const progress = document.getElementById('progress').textContent;
+        const question = document.getElementById('current-question').textContent;
+        const options = Array.from(document.querySelectorAll('#options button'))
+          .map((btn, index) => `Option ${index + 1}: ${btn.textContent}`)
+          .join('. ');
+        textToRead = `${progress}. ${question}. ${options}`;
+      } else if (document.getElementById('result-screen').style.display !== 'none') {
+        const heading = document.getElementById('result-heading').textContent;
+        const result = document.getElementById('result').textContent;
+        textToRead = `${heading}. ${result}`;
+      }
+      
+      if (textToRead) {
+        speakText(textToRead);
+      }
+    }
 
     // Add keyboard event listeners
     document.addEventListener('keydown', handleGlobalKeydown);
     document.getElementById('start-btn').addEventListener('click', startQuiz);
     document.getElementById('restart-btn').addEventListener('click', restartQuiz);
+
+    // Close voice settings when clicking outside
+    document.addEventListener('click', (event) => {
+      const settings = document.getElementById('voice-settings');
+      const settingsBtn = document.getElementById('voice-settings-btn');
+      if (!settings.contains(event.target) && event.target !== settingsBtn) {
+        settings.classList.remove('show');
+      }
+    });
 
     function handleGlobalKeydown(event) {
       // Allow Escape key to restart quiz if on result screen
@@ -474,6 +741,16 @@
         if (buttons[optionIndex]) {
           buttons[optionIndex].click();
         }
+      }
+      
+      // Voice control shortcuts
+      if (event.key === 'v' && event.ctrlKey) {
+        event.preventDefault();
+        toggleVoice();
+      }
+      if (event.key === 's' && event.ctrlKey) {
+        event.preventDefault();
+        stopVoice();
       }
     }
 
@@ -492,12 +769,19 @@
       }
       
       announceToScreenReader(`Text size changed to ${size}`);
+      if (voiceSettings.autoRead) {
+        speakText(`Text size changed to ${size}`);
+      }
     }
 
     function toggleHighContrast() {
       highContrast = !highContrast;
       document.body.classList.toggle('high-contrast', highContrast);
-      announceToScreenReader(`High contrast mode ${highContrast ? 'enabled' : 'disabled'}`);
+      const message = `High contrast mode ${highContrast ? 'enabled' : 'disabled'}`;
+      announceToScreenReader(message);
+      if (voiceSettings.autoRead) {
+        speakText(message);
+      }
     }
 
     function updateStatusIndicator(status) {
@@ -527,7 +811,11 @@
       document.getElementById('welcome-screen').style.display = 'none';
       document.getElementById('question-screen').style.display = 'block';
       updateStatusIndicator('?');
-      announceToScreenReader('Quiz started. Question 1 of 12.');
+      const message = 'Quiz started. Question 1 of 12.';
+      announceToScreenReader(message);
+      if (voiceSettings.autoRead) {
+        speakText(message);
+      }
       showQuestion();
     }
 
@@ -565,7 +853,15 @@
       });
       
       // Announce question details
-      announceProgress(`${progressText}. ${q.question}. ${q.options.length} options available.`);
+      const fullMessage = `${progressText}. ${q.question}. ${q.options.length} options available.`;
+      announceProgress(fullMessage);
+      
+      // Auto-read question if enabled
+      if (voiceSettings.autoRead) {
+        const readText = `${progressText}. ${q.question}. ` + 
+          q.options.map((opt, index) => `Option ${index + 1}: ${opt.text}`).join('. ');
+        setTimeout(() => speakText(readText), 500);
+      }
       
       // Focus first option button for keyboard users
       setTimeout(() => {
@@ -591,7 +887,12 @@
         `Moving to question ${current + 2} of ${questions.length}` : 
         'Moving to results';
       
-      announceToScreenReader(`You selected: ${selectedText}. ${nextText}.`);
+      const message = `You selected: ${selectedText}. ${nextText}.`;
+      announceToScreenReader(message);
+      
+      if (voiceSettings.autoRead) {
+        speakText(message);
+      }
       
       current++;
       
@@ -638,7 +939,13 @@
         </div>
       `;
       
-      announceToScreenReader(`Quiz completed. Your philosophy type is ${winner}. You scored ${max} points in ${winner}.`);
+      const message = `Quiz completed. Your philosophy type is ${winner}. You scored ${max} points in ${winner}.`;
+      announceToScreenReader(message);
+      
+      if (voiceSettings.autoRead) {
+        const fullResult = `${message} ${philosophies[winner]}`;
+        setTimeout(() => speakText(fullResult), 500);
+      }
       
       // Focus the restart button for keyboard users
       setTimeout(() => {
@@ -650,12 +957,19 @@
       current = 0;
       for (let key in scores) scores[key] = 0;
       
+      stopVoice(); // Stop any current speech
+      
       document.getElementById('result-screen').style.display = 'none';
       document.getElementById('welcome-screen').style.display = 'block';
       document.getElementById('feedback').textContent = '';
       updateStatusIndicator('●');
       
-      announceToScreenReader('Quiz restarted. Ready to begin again.');
+      const message = 'Quiz restarted. Ready to begin again.';
+      announceToScreenReader(message);
+      
+      if (voiceSettings.autoRead) {
+        speakText(message);
+      }
       
       // Focus the start button
       setTimeout(() => {
@@ -663,8 +977,9 @@
       }, 100);
     }
 
-    // Initialize status indicator
+    // Initialize status indicator and voice settings
     updateStatusIndicator('●');
+    updateVoiceSettings();
   </script>
 </body>
 </html>
